@@ -18,6 +18,7 @@ then
 		ps2pdf ${1/$a*/.ps}
 		#cc $1 -o ${1/$a*/.out} -lm
 		echo -e "${LGREEN}Done ${NORMAL}"
+              rm ${1/$a*/.ps}
 		shift
 	done
 	echo -e "Printed ${LGREEN} $count ${NORMAL}files."
