@@ -3,7 +3,7 @@
 function endScript ()
 {
 	#Handle Clean up here | Plans are to show a summary at script exit
-	echo -e "\n************************************************************"
+	echo -e "\n********************************************************"
 	exit 2
 }
 #Setting trap to call endScript function with SIGINT(2)
@@ -17,7 +17,7 @@ NORMAL='\033[0m'
 BEEP='\007'
 FLAG=true
 IP='8.8.8.8'
-echo -e "***********${LGREEN}Connection Status ${BLUE}notifier${NORMAL} by ${LGREEN}Snehashis${NORMAL}**********"
+echo -e "*******${LGREEN}Connection Status ${BLUE}notifier${NORMAL} by ${LGREEN}Snehashis${NORMAL}**********"
 if [ $# -gt 0 ]
 then
 	if [ "$#" == 1 ]
