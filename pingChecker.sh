@@ -8,7 +8,8 @@ function endScript ()
 }
 #Setting trap to call endScript function with SIGINT(2)
 trap "endScript" 2
-#This script will flush syslog and kern.log without deleting the actual files hence avoiding fatal crashes while clearing your disk space when running low
+#This script will check ping with provided IP/domain/Default Google DNS and show the connection status
+#Updated every 1s by default argument handling coming soon
 LGREEN='\033[1;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
