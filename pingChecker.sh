@@ -19,6 +19,32 @@ function endScript ()
 	echo -e "****************************************************"
 	exit 2
 }
+
+#Function to convert seconds to more understandable time format
+function formatTime () 
+{
+    num=$1
+    min=0
+    hour=0
+    day=0
+    if((num>59));then
+        let "sec=num%60"
+        let "num=num/60"
+        if((num>59));then
+            let "min=num%60"
+            let "num=num/60"
+            let "hour=num"
+			echo -e "$hour hour(s), $min minute(s) and $sec second(s)\n"
+        else
+            let "min=num"
+			echo -e "$min minute(s) and $sec second(s)\n"
+        fi
+    else
+        let "sec=num"
+		echo -e "$sec second(s)\n"
+    fi
+}
+
 #Setting trap to call endScript function with SIGINT(2)
 trap "endScript" 2
 #This script will check ping with provided IP/domain/Default Google DNS and show the connection status
@@ -50,9 +76,9 @@ while getopts ":at:" opt; do
 done
 shift $((OPTIND -1))
 
-
+#Main script logic here on
 echo -e "******${LGREEN}Connection Status ${BLUE}notifier${NORMAL} by ${LGREEN}Snehashis${NORMAL}*******"
-echo -e "${BLUE}Delay: ${RED}${DELAY}s"
+echo -e "${BLUE}Duration: ${RED}${DELAY}s"
 echo -ne "${BLUE}Alarm: "
 if test -z "$BEEP"
 then
@@ -81,19 +107,9 @@ do
 			echo -ne "\n${BLUE}Connection Restored!${NORMAL}"
 			NO_REPLY=false
 			DOT_COUNT=0
-			#Convert the seconds to easy to understand time format
-			if (( $SECONDS > 3600 )) ; then
-				let "hours=SECONDS/3600"
-				let "minutes=(SECONDS%3600)/60"
-				let "seconds=(SECONDS%3600)%60"
-				echo -e "\nApprox ${RED}down${NORMAL} time:${LGREEN} $hours hour(s), $minutes minute(s) and $seconds second(s)\n" 
-			elif (( $SECONDS > 60 )) ; then
-				let "minutes=(SECONDS%3600)/60"
-				let "seconds=(SECONDS%3600)%60"
-				echo -e "\nApprox ${RED}down${NORMAL} time:${LGREEN} $minutes minute(s) and $seconds second(s)\n"
-			else
-				echo -e "\nApprox ${RED}down${NORMAL} time:${LGREEN} $SECONDS second(s)\n"
-			fi
+			
+			echo -ne "\nApprox ${RED}down${NORMAL} time: ${LGREEN}"
+			formatTime $SECONDS #Convert the seconds to easy to understand time format
 		fi
 		if [ $DOT_COUNT -gt 0 -a $DOT_COUNT -le 5 ] #To avoid flooding with '.'
 		then
