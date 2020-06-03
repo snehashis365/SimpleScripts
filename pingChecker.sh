@@ -97,7 +97,7 @@ then
 	echo "Checking default Google DNS"
 fi	
 echo -e "${BLUE}Pinging${NORMAL}.....${LGREEN}${IP}${NORMAL}\n"
-while((1)) #The scipt rus infinitely unless control break(Ctrl+c) occurs
+while((1)) #The script runs infinitely unless control break(Ctrl+c) occurs
 do
 	OUTPUT=$(ping -w ${DELAY} ${IP} | grep "Destination Host Unreachable\|100% packet loss")
 	if test -z "$OUTPUT"
