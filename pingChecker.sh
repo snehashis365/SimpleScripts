@@ -45,14 +45,32 @@ function formatTime ()
     fi
 }
 
+#Function to show help message
+function help ()
+{
+	echo "This script will check ping with provided IP/domain/Default Google DNS and show the connection status"
+   echo
+   echo "Syntax: ./pingChecker.sh [-h|a|t <SECONDS>]"
+   echo "options:"
+   echo "h     Print this Help."
+   echo "a     Turn alarm On when there is no reply."
+   #echo "v     Verbose mode."
+   echo "t     Set the life time of every ping."
+   echo
+}
+
 #Setting trap to call endScript function with SIGINT(2)
 trap "endScript" 2
 #This script will check ping with provided IP/domain/Default Google DNS and show the connection status
 #Updated every 1s by default| Options and option argument handling added still a prorotype
 
 #Options and options arguments handling:-
-while getopts ":at:" opt; do
+while getopts ":hat:" opt; do
 	case ${opt} in
+		h ) #Displays Help message
+			help
+			exit 2
+			;;
 		a ) #Turn on the alarm on no reply
 			BEEP='\007'
 			;;
