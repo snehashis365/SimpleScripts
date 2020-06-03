@@ -67,14 +67,14 @@ trap "endScript" 2
 #Options and options arguments handling:-
 while getopts ":hat:" opt; do
 	case ${opt} in
-		h ) #Displays Help message
+		h ) #Display Help message
 			help
 			exit 2
 			;;
 		a ) #Turn on the alarm on no reply
 			BEEP='\007'
 			;;
-		t ) #Manually set delay
+		t ) #Manually set duration
 			if [[ "$OPTARG" == *"."* ]]; then
 				echo -e "${RED}Invalid option:${NORMAL} '$OPTARG' is not an INTEGER" 1>&2
 				exit 2
