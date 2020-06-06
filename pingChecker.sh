@@ -16,7 +16,7 @@ function endScript ()
 {
 	#Handle Clean up here | Plans are to show a summary at script exit | Exit message added
 	echo -e "\nDetected Control Break\nExiting....."
-	echo -e "****************************************************"
+	echo -e "***************************************************"
 	exit 2
 }
 
@@ -95,7 +95,7 @@ done
 shift $((OPTIND -1))
 
 #Main script logic here on
-echo -e "******${LGREEN}Connection Status ${BLUE}notifier${NORMAL} by ${LGREEN}Snehashis${NORMAL}*******"
+echo -e "******${LGREEN}Connection Status ${BLUE}notifier${NORMAL} by ${LGREEN}Snehashis${NORMAL}******"
 echo -e "${BLUE}Duration: ${RED}${DELAY}s"
 echo -ne "${BLUE}Alarm: "
 if test -z "$BEEP"
