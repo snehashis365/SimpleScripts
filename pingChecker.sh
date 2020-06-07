@@ -61,6 +61,62 @@ function help ()
    echo
 }
 
+#Function to check ping reply and show status
+function checkPing ()
+{
+	if [ $# -gt 0 ]
+	then
+		IP=$1
+		DEFAULT_IP_FLAG=false
+	fi
+	if [ "$DEFAULT_IP_FLAG" = true ]
+	then
+		echo "Checking default Google DNS"
+	fi	
+	echo -e "${BLUE}Pinging${NORMAL}.....${LGREEN}${IP}${NORMAL}\n"
+	while((1)) #The script runs infinitely unless control break(Ctrl+c) occurs
+	do
+		OUTPUT=$(ping -w ${DELAY} ${IP} | grep "Destination Host Unreachable\|100% packet loss")
+		if test -z "$OUTPUT"
+		then
+			if [ "$NO_REPLY" = true ]
+			then
+				echo -ne "\n${BLUE}Connection Restored!${NORMAL}"
+				NO_REPLY=false
+				DOT_COUNT=0
+				
+				echo -ne "\nApprox ${RED}down${NORMAL} time: ${LGREEN}"
+				formatTime $SECONDS #Convert the seconds to easy to understand time format
+			fi
+			if [ $DOT_COUNT -gt 0 -a $DOT_COUNT -le 5 ] #To avoid flooding with '.'
+			then
+				echo -ne "."
+			else
+				echo -ne "${DEL_LINE}\r${LGREEN}Connection OK${NORMAL}${NOTIFY}"
+				DOT_COUNT=0
+			fi
+			let "DOT_COUNT=DOT_COUNT+1" #Increment the counter
+		else
+			if [ "$NO_REPLY" = false ]
+			then
+				echo -e "\n${BLUE}Connection Lost!${NORMAL}\n"
+				NO_REPLY=true
+				SECONDS=0
+				DOT_COUNT=0
+			fi
+			if [ $DOT_COUNT -gt 0 -a $DOT_COUNT -le 5 ]
+			then
+				echo -ne ".${BEEP}"
+			else
+				echo -ne "${DEL_LINE}\r${RED}No Reply${NORMAL}${BEEP}"
+				DOT_COUNT=0
+			fi
+			let "DOT_COUNT=DOT_COUNT+1"
+		fi
+	done
+
+}
+
 #Setting trap to call endScript function with SIGINT(2)
 trap "endScript" 2
 #This script will check ping with provided IP/domain/Default Google DNS and show the connection status
@@ -137,53 +193,11 @@ else
 	echo -e "${RED}On"
 fi
 echo -ne "${NORMAL}"
-if [ $# -gt 0 ]
-then
-	IP=$1
-	DEFAULT_IP_FLAG=false
-fi
-if [ "$DEFAULT_IP_FLAG" = true ]
-then
-	echo "Checking default Google DNS"
-fi	
-echo -e "${BLUE}Pinging${NORMAL}.....${LGREEN}${IP}${NORMAL}\n"
-while((1)) #The script runs infinitely unless control break(Ctrl+c) occurs
-do
-	OUTPUT=$(ping -w ${DELAY} ${IP} | grep "Destination Host Unreachable\|100% packet loss")
-	if test -z "$OUTPUT"
-	then
-		if [ "$NO_REPLY" = true ]
-		then
-			echo -ne "\n${BLUE}Connection Restored!${NORMAL}"
-			NO_REPLY=false
-			DOT_COUNT=0
-			
-			echo -ne "\nApprox ${RED}down${NORMAL} time: ${LGREEN}"
-			formatTime $SECONDS #Convert the seconds to easy to understand time format
-		fi
-		if [ $DOT_COUNT -gt 0 -a $DOT_COUNT -le 5 ] #To avoid flooding with '.'
-		then
-			echo -ne "."
-		else
-			echo -ne "${DEL_LINE}\r${LGREEN}Connection OK${NORMAL}${NOTIFY}"
-			DOT_COUNT=0
-		fi
-		let "DOT_COUNT=DOT_COUNT+1" #Increment the counter
-	else
-		if [ "$NO_REPLY" = false ]
-		then
-			echo -e "\n${BLUE}Connection Lost!${NORMAL}\n"
-			NO_REPLY=true
-			SECONDS=0
-			DOT_COUNT=0
-		fi
-		if [ $DOT_COUNT -gt 0 -a $DOT_COUNT -le 5 ]
-		then
-			echo -ne ".${BEEP}"
-		else
-			echo -ne "${DEL_LINE}\r${RED}No Reply${NORMAL}${BEEP}"
-			DOT_COUNT=0
-		fi
-		let "DOT_COUNT=DOT_COUNT+1"
-	fi
-done
+#Calling function with given argument to check ping
+#The idea to check multiple IP at once will be handled here by calling the function as many times needed
+#while [[ $# -gt 0 ]]
+#do
+	checkPing $1
+#	shift
+#done
+#The layout is written in comment line for now will keep working
