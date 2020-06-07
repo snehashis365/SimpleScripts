@@ -6,6 +6,7 @@ BLUE='\033[0;34m'
 NORMAL='\033[0m'
 DEL_LINE='\033[2K' #Escape sequence to delete the content of the line
 BEEP='' #Alarm off by default
+NOTIFY='' #Notify on reply off by default
 DEFAULT_IP_FLAG=true
 NO_REPLY=false #To help handle connection status change
 DOT_COUNT=0
@@ -53,6 +54,7 @@ function help ()
    echo "Syntax: ./pingChecker.sh [-h|a|t <SECONDS>]"
    echo "options:"
    echo "h     Print this Help."
+   echo "n	   Notify on reply"
    echo "a     Turn alarm On when there is no reply."
    #echo "v     Verbose mode."
    echo "t     Set the life time of every ping."
@@ -65,17 +67,40 @@ trap "endScript" 2
 #Updated every 1s by default| Options and option argument handling added still a prorotype
 
 #Options and options arguments handling:-
-while getopts ":hat:" opt; do
+while getopts ":hnat:" opt; do
 	case ${opt} in
 		h ) #Display Help message
 			help
 			exit 2
 			;;
+		n ) #Turn on Notify on reply
+			NOTIFY='\007'
+			;;
 		a ) #Turn on the alarm on no reply
-			BEEP='\007'
+			if [[ "$NOTIFY" == '\007' ]]
+			then
+				echo -e "${RED}Notify on Reply and Alarm are on at the same time${NORMAL}\nThis will cause constant beeping no matter the connection state"
+				while true; do
+					echo -ne "${BLUE}Do you want to continue anyway? ${NORMAL}"
+					read yn
+					case $yn in
+						[Yy]* )
+							BEEP='\007'
+							break
+							;;
+						[Nn]* ) 
+							exit 2
+							;;
+						* ) echo "Please answer [Y/y/yes] or [N/n/no]";;
+					esac
+				done
+			else
+				BEEP='\007'
+			fi
 			;;
 		t ) #Manually set duration
-			if [[ "$OPTARG" == *"."* ]]; then
+			if [[ "$OPTARG" == *"."* ]]
+			then
 				echo -e "${RED}Invalid option:${NORMAL} '$OPTARG' is not an INTEGER" 1>&2
 				exit 2
 			else
@@ -97,6 +122,13 @@ shift $((OPTIND -1))
 #Main script logic here on
 echo -e "******${LGREEN}Connection Status ${BLUE}notifier${NORMAL} by ${LGREEN}Snehashis${NORMAL}******"
 echo -e "${BLUE}Duration: ${RED}${DELAY}s"
+echo -ne "${BLUE}Notify: "
+if test -z "$NOTIFY"
+then
+	echo -e "${LGREEN}Off"
+else
+	echo -e "${RED}On"
+fi
 echo -ne "${BLUE}Alarm: "
 if test -z "$BEEP"
 then
@@ -133,7 +165,7 @@ do
 		then
 			echo -ne "."
 		else
-			echo -ne "${DEL_LINE}\r${LGREEN}Connection OK${NORMAL}"
+			echo -ne "${DEL_LINE}\r${LGREEN}Connection OK${NORMAL}${NOTIFY}"
 			DOT_COUNT=0
 		fi
 		let "DOT_COUNT=DOT_COUNT+1" #Increment the counter
