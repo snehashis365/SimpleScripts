@@ -64,17 +64,19 @@ function help ()
 {
 	echo "This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named."
    echo
-   echo "Syntax: ./cRun.sh [-h|c|r|t <SECONDS>]"
+   echo "Syntax: ./cRun.sh [-h|c|r|m|t|i]"
    echo "options:"
    echo "h     Print this Help."
    echo "c	   Compile/Re-compile"
    echo "r     Run relevant object file without recompiling"
    #echo "v     Verbose mode."
+   echo "m     Build a menu with the provided files"
    echo "t     Show total time taken to execute the script"
+   echo "i     Install the script to /usr/local/bin to ease"
    echo
 }
 #Options and options arguments handling:-
-while getopts ":hcrmt" opt; do
+while getopts ":hcrmti" opt; do
 	case ${opt} in
 		h ) #Display Help message
 			help
@@ -89,8 +91,13 @@ while getopts ":hcrmt" opt; do
 			;;
 		m )
 			MAKE_MENU=true
+			;;
 		t ) #Show shell execution duration
 			SHOW_TIME=true
+			;;
+		i ) #Install
+			echo -e "${RED}For LINUX/WSL Systems only\n${BLUE}Coming Soon..."
+			exit 2
 			;;
 		\? )
 			echo "Invalid option: $OPTARG" 1>&2
