@@ -26,11 +26,7 @@ function type ()
 }
 if [ $# -gt 0 ]
 then
-	while(($#))
-	do
-        type $1
-        shift
-    done
+	type "$@"
 else
     type "Hello World\nThis is a test string"
 fi
