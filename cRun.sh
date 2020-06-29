@@ -23,7 +23,7 @@ function install ()
 		echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
 		INSTALLED=true
 	fi
-	if [ "$OS" -eq "Android" ]; then
+	if [ "$OS" == "Android" ]; then
 		echo -e "${RED}Install is not supported for your OS"
 		echo -e "For LINUX System/WSL Environment only\n${NORMAL}"
 		exit 2
