@@ -12,7 +12,55 @@ RUN=true
 DEL_OBJ=false
 SHOW_TIME=false
 
-clear
+#Install the script to local bin
+function install ()
+{
+	INSTALLED=false
+	COPIED=false
+	PERMISSION=false
+	if [ -f "/usr/local/bin/cRun" ]
+	then
+		echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
+		INSTALLED=true
+	fi
+	if [ "$INSTALLED" = false ]; then
+		echo -e "${RED}For LINUX System/WSL Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n${BLUE}Checking Root..."
+	else
+		echo -e "Attempting Update (Any manual modification will be reverted)"
+	fi
+	if [ $EUID -ne 0 ]
+	then
+		echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'\n"
+	else
+		echo -e "${LGREEN}Root Access Granted...${NORMAL}\n"
+	fi
+	echo -ne "${BLUE}Copying Script to local bin....${NORMAL}"
+	sudo cp cRun.sh /usr/local/bin/cRun
+	if [ $? -ne 0 ]
+	then
+		if [ "$INSTALLED" = false ]; then
+			echo -e "\n${RED}Failed to copy${NORMAL}\nTry Manuallu Copying the script to \n${BLUE}/user/local/bin/\n${NORMAL}And remove the .sh extension\n"
+		else
+			echo -e "\nNo cRun script found in curent directory\n"
+		fi
+	else
+		echo -e "${LGREEN}Success${NORMAL}"
+		COPIED=true
+	fi
+	echo -ne "${BLUE}Setting permission......${NORMAL}"
+	sudo chmod +x /usr/local/bin/cRun
+	if [ $? -ne 0 ]
+	then
+		echo -e "${RED}Failed to set executable permission${NORMAL}\nTry to Manually set permission for \n${BLUE}/user/local/bin/cRun\n${NORMAL}"
+	else
+		echo -e "${LGREEN}Success${NORMAL}"
+		PERMISSION=true
+	fi
+	if [ "$COPIED" = true -a "$PERMISSION" = true ]; then
+		echo -e "${LGREEN}Install Success${NORMAL}"
+	fi
+	endScript
+}
 
 #Function to convert and show seconds to more understandable time format
 function showTime () 
@@ -229,8 +277,7 @@ while getopts ":hcrmtdi" opt; do
 			DEL_OBJ=true
 			;;
 		i ) #Install
-			echo -e "${RED}For LINUX System/WSL Environment only\n${BLUE}Coming Soon..."
-			exit 2
+			install
 			;;
 		\? )
 			echo "Invalid option: $OPTARG" 1>&2
@@ -240,6 +287,7 @@ while getopts ":hcrmtdi" opt; do
 done
 shift $((OPTIND -1))
 
+clear
 echo -e "\n*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n\n"
 if [ $# -gt 0 ]
 then
