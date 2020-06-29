@@ -11,6 +11,7 @@ COMPILE=true
 RUN=true
 DEL_OBJ=false
 SHOW_TIME=false
+OS=$(uname -o)
 
 #Install the script to local bin
 function install ()
@@ -18,18 +19,22 @@ function install ()
 	INSTALLED=false
 	COPIED=false
 	PERMISSION=false
-	if [ -f "/usr/local/bin/cRun" ]
-	then
+	if [ -f "/usr/local/bin/cRun" ]; then
 		echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
 		INSTALLED=true
+	fi
+	if [ "$OS" -eq "Android" ]; then
+		echo -e "${RED}Install is not supported for your OS"
+		echo -e "For LINUX System/WSL Environment only\n${NORMAL}"
+		exit 2
+	fi
 	fi
 	if [ "$INSTALLED" = false ]; then
 		echo -e "${RED}For LINUX System/WSL Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n${BLUE}Checking Root..."
 	else
 		echo -e "Attempting Update (Any manual modification will be reverted)"
 	fi
-	if [ $EUID -ne 0 ]
-	then
+	if [ $EUID -ne 0 ];	then
 		echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'"
 		sudo echo
 	else
@@ -37,8 +42,7 @@ function install ()
 	fi
 	echo -ne "${BLUE}Copying Script to local bin....${NORMAL}"
 	sudo cp cRun.sh /usr/local/bin/cRun
-	if [ $? -ne 0 ]
-	then
+	if [ $? -ne 0 ]; then
 		if [ "$INSTALLED" = false ]; then
 			echo -e "\n${RED}Failed to copy${NORMAL}\nTry Manuallu Copying the script to \n${BLUE}/user/local/bin/\n${NORMAL}And remove the .sh extension\n"
 		else
@@ -50,8 +54,7 @@ function install ()
 	fi
 	echo -ne "${BLUE}Setting permission......${NORMAL}"
 	sudo chmod +x /usr/local/bin/cRun
-	if [ $? -ne 0 ]
-	then
+	if [ $? -ne 0 ]; then
 		echo -e "${RED}Failed to set executable permission${NORMAL}\nTry to Manually set permission for \n${BLUE}/user/local/bin/cRun\n${NORMAL}"
 	else
 		echo -e "${LGREEN}Success${NORMAL}"
@@ -131,8 +134,7 @@ function endScript ()
 {
 	#Handle Clean up here
 	echo -e "\nExiting....."
-	if [ $SHOW_TIME = true ]
-	then
+	if [ $SHOW_TIME = true ]; then
 		showTime $SECONDS
 	fi
 	echo -e "***************************************************"
@@ -144,15 +146,13 @@ function compile ()
 	ERROR_COUNT=0
 	while(($#))
 	do
-		if [ -f ${1/.c*/.out} ]
-		then
+		if [ -f ${1/.c*/.out} ]; then
 			echo -e "${BLUE}Re-Compiling${NORMAL}.....$1\n"
 		else	
 			echo -e "${BLUE}Compiling${NORMAL}.....$1\n"
 		fi
 		cc $1 -o ${1/.c*/.out} -lm
-		if [ $? -ne 0 ]
-		then
+		if [ $? -ne 0 ]; then
 			(($ERROR_COUNT++))
 		fi
 		echo -e "\n${LGREEN}Done ${NORMAL}"
@@ -160,13 +160,11 @@ function compile ()
 	done
 	#echo -e "Processed ${LGREEN} $count ${NORMAL}files."
 	echo -e "${LGREEN}Object files generated${NORMAL}"
-	if [ $ERROR_COUNT -gt 0 ]
-	then
+	if [ $ERROR_COUNT -gt 0 ]; then
 		echo -e "${RED}${ERROR_COUNT} Errors${NORMAL} were encountered by ${BLUE}GCC compiler${LGREEN} ignoring warnings${NORMAL}."
 		return $ERROR_COUNT
 	fi
-	if [ "$RUN" = false ]
-	then
+	if [ "$RUN" = false ]; then
 		echo -e "\nCompile Output will be cleared Press ctrl+c to exit the script and keep output otherwise\n"
 		read -r -s -p $'Press escape to continue...\n' -d $'\e'
 	fi
@@ -177,22 +175,18 @@ function run ()
 	COMPILE_ERROR=false
 	while(($#))
 	do
-		if [ -f ${1/.c*/.out} -o "$COMPILE" = true ]
-		then
+		if [ -f ${1/.c*/.out} -o "$COMPILE" = true ]; then
 			compile $1
-			if [ $? -ne 0 ]
-			then
+			if [ $? -ne 0 ]; then
 				COMPILE_ERROR=true
 			else
 				COMPILE_ERROR=false
 			fi
 		fi
-		if [ COMPILE_ERROR=false ]
-		then
+		if [ COMPILE_ERROR=false ]; then
 			echo -e "${BLUE}Executing${NORMAL}.....$1\n"
 			./${1/.c*/.out}
-			if [ "$DEL_OBJ" = true ]
-			then
+			if [ "$DEL_OBJ" = true ]; then
 				echo -e "${RED}Removing Object File${NORMAL}......$1"
 				rm ${1/.c*/.out}
 			fi
@@ -254,8 +248,7 @@ function buildMenu ()
 	while(($#))
 	do
 		COMPILE_STATUS='\033[0;31m'
-		if [ -f ${1/.c*/.out} ]
-		then
+		if [ -f ${1/.c*/.out} ]; then
 			COMPILE_STATUS='\033[1;32m'
 		fi
 		echo -en "${INDEX}. ${COMPILE_STATUS}$1 ${NORMAL}"
@@ -266,12 +259,10 @@ function buildMenu ()
 	echo
 	echo -e "0. ${LGREEN}Exit ${NORMAL}"
 	read -p "Select : " CHOICE
-	if [ $CHOICE -gt 0 -a $CHOICE -le $INDEX ]
-	then
+	if [ $CHOICE -gt 0 -a $CHOICE -le $INDEX ]; then
 		buildSubMenu ${ITEM[$CHOICE]}
 		clear
-	elif [ $CHOICE -eq 0 ]
-	then
+	elif [ $CHOICE -eq 0 ]; then
 		endScript
 	fi
 }
@@ -283,8 +274,8 @@ function help ()
 	echo
 	echo "Syntax: ./cRun.sh [-h|c|r|m|t|d|i]"
 	echo "options:"
-	echo "h     Print this Help."
-	echo "c	    Compile only/Re-compile(If object file present)"
+	echo "h     Print this Help"
+	echo "c     Compile only/Recompile(If object file present)"
 	echo "r     Run relevant object file without recompiling(Automatically compile if object file missing)"
 	#echo "v     Verbose mode."
 	echo "m     Build a menu with the provided files"
@@ -345,18 +336,15 @@ then
 	count=$#
 	while(($#))
 	do
-		if [ "$MAKE_MENU" = true ]
-		then
+		if [ "$MAKE_MENU" = true ]; then
 			while((1))
 			do
 				buildMenu "$@"
 			done
-		elif [ "$RUN" = true ]
-		then
+		elif [ "$RUN" = true ];	then
 			banner
 			run "$@"
-		elif [ "$COMPILE" = true ]
-		then
+		elif [ "$COMPILE" = true ];	then
 			banner
 			compile "$@"
 		fi
