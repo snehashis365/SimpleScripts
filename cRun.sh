@@ -24,7 +24,7 @@ function install ()
 		INSTALLED=true
 	fi
 	if [ "$OS" == "Android" ]; then
-		echo -e "${RED}Install is not supported for your OS"
+		echo -e "${RED}Install is not supported for your OS Aborting"
 		echo -e "For LINUX System/WSL Environment only\n${NORMAL}"
 		exit 2
 	fi
