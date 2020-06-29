@@ -152,7 +152,7 @@ function compile ()
 		fi
 		cc $1 -o ${1/.c*/.out} -lm
 		if [ $? -ne 0 ]; then
-			(($ERROR_COUNT++))
+			let "ERROR_COUNT=ERROR_COUNT+1"
 		fi
 		echo -e "\n${LGREEN}Done ${NORMAL}"
 		shift
