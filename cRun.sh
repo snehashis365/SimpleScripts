@@ -30,7 +30,8 @@ function install ()
 	fi
 	if [ $EUID -ne 0 ]
 	then
-		echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'\n"
+		echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'"
+		sudo echo
 	else
 		echo -e "${LGREEN}Root Access Granted...${NORMAL}\n"
 	fi
@@ -198,6 +199,10 @@ function buildSubMenu ()
 
 function buildMenu ()
 {
+	if [ "$1" = "*.c" ]; then
+		echo -e "${BLUE}No .c file in current directory\n${NORMAL}"
+		endScript
+	fi
 	INDEX=1
 	declare -a ITEM
 	ITEM[0]="Item_List" #Occuying 1st index just cause I want to don't question this it's unecessary
