@@ -95,7 +95,8 @@ function checkPing ()
 				echo -ne "${DEL_LINE}\r${LGREEN}Connection OK${NORMAL}${NOTIFY}"
 				DOT_COUNT=0
 			fi
-			let "DOT_COUNT=DOT_COUNT+1" #Increment the counter
+			let "DOT_COUNT=DOT_COUNT+1" 
+			#Increment the counter
 		else
 			if [ "$NO_REPLY" = false ]
 			then
