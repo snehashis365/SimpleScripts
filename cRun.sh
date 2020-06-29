@@ -146,16 +146,16 @@ function compile ()
 	do
 		if [ -f ${1/.c*/.out} ]
 		then
-			echo -e "${BLUE}Re-Compiling${NORMAL}.....$1"
+			echo -e "${BLUE}Re-Compiling${NORMAL}.....$1\n"
 		else	
-			echo -e "${BLUE}Compiling${NORMAL}.....$1"
+			echo -e "${BLUE}Compiling${NORMAL}.....$1\n"
 		fi
+		cc $1 -o ${1/.c*/.out} -lm
 		if [ $? -ne 0 ]
 		then
 			(($ERROR_COUNT++))
 		fi
-		cc $1 -o ${1/.c*/.out} -lm
-		echo -e "${LGREEN}Done ${NORMAL}"
+		echo -e "\n${LGREEN}Done ${NORMAL}"
 		shift
 	done
 	#echo -e "Processed ${LGREEN} $count ${NORMAL}files."
@@ -167,7 +167,7 @@ function compile ()
 	fi
 	if [ "$RUN" = false ]
 	then
-		echo -e "Compile Output will be cleared Press ctrl+c to exit the script and keep output otherwise\n"
+		echo -e "\nCompile Output will be cleared Press ctrl+c to exit the script and keep output otherwise\n"
 		read -r -s -p $'Press escape to continue...\n' -d $'\e'
 	fi
 }
@@ -189,20 +189,20 @@ function run ()
 		fi
 		if [ COMPILE_ERROR=false ]
 		then
-			echo -e "${BLUE}Executing${NORMAL}.....$1"
+			echo -e "${BLUE}Executing${NORMAL}.....$1\n"
 			./${1/.c*/.out}
 			if [ "$DEL_OBJ" = true ]
 			then
 				echo -e "${RED}Removing Object File${NORMAL}......$1"
 				rm ${1/.c*/.out}
 			fi
-			echo -e "${LGREEN}Done ${NORMAL}"
+			echo -e "\n${LGREEN}Done ${NORMAL}"
 		else
-			echo -e "${RED}Cannot Run${NORMAL}.....$1"
+			echo -e "\n${RED}Cannot Run${NORMAL}.....$1"
 		fi
 		shift
 	done
-	echo -e "Output will be cleared Press ctrl+c to exit the script and keep output otherwise\n"
+	echo -e "\nOutput will be cleared Press ctrl+c to exit the script and keep output otherwise\n"
 	read -r -s -p $'Press escape to continue...\n' -d $'\e'
 }
 
