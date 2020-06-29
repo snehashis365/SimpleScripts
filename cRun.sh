@@ -28,7 +28,6 @@ function install ()
 		echo -e "For LINUX System/WSL Environment only\n${NORMAL}"
 		exit 2
 	fi
-	fi
 	if [ "$INSTALLED" = false ]; then
 		echo -e "${RED}For LINUX System/WSL Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n${BLUE}Checking Root..."
 	else
