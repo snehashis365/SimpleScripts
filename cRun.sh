@@ -63,10 +63,48 @@ function install ()
 	endScript
 }
 
+function banner ()
+{
+	clear
+	echo -e "*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n"
+	echo -n "Re-Compile : "
+	if [ "$COMPILE" = true ]; then
+		echo -e "${BLUE}On${NORMAL}"
+	else
+		echo -e "${LGREEN}Off${NORMAL}"
+	fi
+	echo -n "Compile only : "
+	if [ "$RUN" = false ]; then
+		echo -e "${BLUE}Yes${NORMAL}"
+	else
+		echo -e "${LGREEN}No${NORMAL}"
+	fi
+	echo -n "Delete object file after running : "
+	if [ "$DEL_OBJ" = true ]; then
+		echo -e "${RED}On${NORMAL}"
+	else
+		echo -e "${LGREEN}Off${NORMAL}"
+	fi
+	echo -n "Build Menu : "
+	if [ "$MAKE_MENU" = true ]; then
+		echo -e "${BLUE}On${NORMAL}"
+	else
+		echo -e "${LGREEN}Off${NORMAL}"
+	fi
+	echo -n "Show time : "
+	if [ "$SHOW_TIME" = true ]; then
+		echo -e "${LGREEN}On${NORMAL}"
+	else
+		echo -e "${BLUE}Off${NORMAL}"
+	fi
+	echo
+	
+}
+
 #Function to convert and show seconds to more understandable time format
 function showTime () 
 {
-	echo -ne "\n\n${BLUE}Script executed for : ${NORMAL}"
+	echo -ne "\n${BLUE}Script executed for : ${NORMAL}"
     num=$1
     min=0
     hour=0
@@ -172,8 +210,7 @@ function buildSubMenu ()
 {
 	while((1))
 	do
-		clear
-		echo -e "\n*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n\n"
+		banner
 		echo -e "${BLUE}Selected ->${LGREEN} $1 ${NORMAL}"
 		echo -e "1. ${LGREEN}Run ${NORMAL}(Automatically compile if object file missing)"
 		echo -e "2. ${BLUE}Compile Only ${NORMAL}"
@@ -188,8 +225,7 @@ function buildSubMenu ()
 		elif((CHOICE==9));then
 			return 2
 		else
-			clear
-			echo -e "\n*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n\n"
+			banner
 			echo -e "${RED}Invalid Option${NORMAL}\nPlease Try Again"
 			echo -e "${BLUE}Selected ->${LGREEN} $1 ${NORMAL}"
 			buildSubMenu $1
@@ -199,6 +235,7 @@ function buildSubMenu ()
 
 function buildMenu ()
 {
+	banner
 	if [ "$1" = "*.c" ]; then
 		echo -e "${BLUE}No .c file in current directory\n${NORMAL}"
 		endScript
@@ -224,6 +261,7 @@ function buildMenu ()
 	if [ $CHOICE -gt 0 -a $CHOICE -le $INDEX ]
 	then
 		buildSubMenu ${ITEM[$CHOICE]}
+		clear
 	elif [ $CHOICE -eq 0 ]
 	then
 		endScript
@@ -293,7 +331,7 @@ done
 shift $((OPTIND -1))
 
 clear
-echo -e "\n*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n\n"
+
 if [ $# -gt 0 ]
 then
 	count=$#
@@ -304,14 +342,14 @@ then
 			while((1))
 			do
 				buildMenu "$@"
-				clear
-				echo -e "\n*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n\n"
 			done
 		elif [ "$RUN" = true ]
 		then
+			banner
 			run "$@"
 		elif [ "$COMPILE" = true ]
 		then
+			banner
 			compile "$@"
 		fi
 		shift
@@ -319,11 +357,9 @@ then
 	echo -e "Processed ${LGREEN} $count ${NORMAL}files."
 	echo -e "${LGREEN}Object files should be generated${NORMAL} if no ${RED}errors${NORMAL} were encountered by ${BLUE}GCC compiler${LGREEN} ignore warnings${NORMAL}."
 else
-	echo -e "${RED}Experimental!!!\n${NORMAL}Building Menu...\n"
 	while((1))
 	do
+		MAKE_MENU=true
 		buildMenu *.c
-		clear
-		echo -e "\n*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n\n"
 	done
 fi
