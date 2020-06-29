@@ -21,4 +21,4 @@ then
 	echo -e "${LGREEN}Object files should be generated${NORMAL} if no ${RED}errors${NORMAL} were encountered by ${BLUE}GCC compiler${LGREEN} ignore warnings${NORMAL}."
 else
 	echo -e "${RED}Need to spicify atleast one file. ${NORMAL}"
-fi
+fi 
