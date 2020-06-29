@@ -66,7 +66,7 @@ function install ()
 function banner ()
 {
 	clear
-	echo -e "*************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n"
+	echo -e "***************${LGREEN}c${BLUE}Run${NORMAL} by ${LGREEN}snehashis365${NORMAL}***************\n"
 	echo -n "Re-Compile : "
 	if [ "$COMPILE" = true ]; then
 		echo -e "${BLUE}On${NORMAL}"
@@ -215,6 +215,7 @@ function buildSubMenu ()
 		echo -e "1. ${LGREEN}Run ${NORMAL}(Automatically compile if object file missing)"
 		echo -e "2. ${BLUE}Compile Only ${NORMAL}"
 		echo -e  "\n9. Return to Main Menu"
+		echo -e  "0. Exit"
 		read -p "Select : " CHOICE
 		if((CHOICE==1));then
 			run $1
@@ -224,6 +225,8 @@ function buildSubMenu ()
 			RUN=true
 		elif((CHOICE==9));then
 			return 2
+		elif((CHOICE==0));then
+			endScript
 		else
 			banner
 			echo -e "${RED}Invalid Option${NORMAL}\nPlease Try Again"
@@ -239,6 +242,11 @@ function buildMenu ()
 	if [ "$1" = "*.c" ]; then
 		echo -e "${BLUE}No .c file in current directory\n${NORMAL}"
 		endScript
+	fi
+	if [ "$#" = "1" ]; then
+		buildSubMenu $1
+		clear
+		return 2
 	fi
 	INDEX=1
 	declare -a ITEM
@@ -355,7 +363,6 @@ then
 		shift
 	done
 	echo -e "Processed ${LGREEN} $count ${NORMAL}files."
-	echo -e "${LGREEN}Object files should be generated${NORMAL} if no ${RED}errors${NORMAL} were encountered by ${BLUE}GCC compiler${LGREEN} ignore warnings${NORMAL}."
 else
 	while((1))
 	do
