@@ -1,7 +1,6 @@
 #!/bin/bash
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
-#Push from new install
 LGREEN='\033[1;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
@@ -268,6 +267,7 @@ function help() {
   echo "m     Build a menu with the provided files"
   echo "t     Show total time taken to execute the script"
   echo "d     Delete Object file after it has been execued"
+  echo "s     Run as root (WSL 2 Users might want to use this if facing access denied)"
   echo "i     Install the script to /usr/local/bin to ease"
   echo
 }
@@ -276,7 +276,7 @@ function help() {
 trap "endScript" 2
 
 #Options and options arguments handling:-
-while getopts ":hcrmtdi" opt; do
+while getopts ":hcrmtdsi" opt; do
   case $opt in
     h) #Display Help message
       help
@@ -303,6 +303,16 @@ while getopts ":hcrmtdi" opt; do
     d) #Delete Object file after running the program
       echo -e "Object Files will be ${RED}DELETED$BLUE After Execution$NORMAL"
       DEL_OBJ=true
+      ;;
+    s) #Superuser aka root access
+      echo -e "Checking user.....\n"
+      if [ "$EUID" -ne 0 ]; then
+        echo -e "${RED}\n${NORMAL}Attempting 'sudo'"
+        sudo "$0"
+        exit 2
+      else
+        echo -e "${LGREEN}Already Root...$NORMAL\n"
+      fi
       ;;
     i) #Install
       install
