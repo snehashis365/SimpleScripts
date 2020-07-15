@@ -1,6 +1,7 @@
 #!/bin/bash
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
+#Push from new install
 LGREEN='\033[1;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
