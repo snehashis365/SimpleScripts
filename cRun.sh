@@ -1,9 +1,11 @@
 #!/bin/bash
+VERSION='0.7.18.2'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
+LBLUE='\033[0;36m'
 NORMAL='\033[0m'
 BEEP='\007'
 MAKE_MENU=false
@@ -18,20 +20,73 @@ function install() {
   INSTALLED=false
   COPIED=false
   PERMISSION=false
-  if [ -f "/usr/local/bin/cRun" ]; then
-    echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
-    INSTALLED=true
-  fi
+  VERSION_PASS=false
+  srcVERSION=''
   if [ "$OS" == "Android" ]; then
     echo -e "${RED}Install is not supported for your OS Aborting"
     echo -e "For LINUX System/WSL Environment only\n$NORMAL"
     exit 2
   fi
-  if [ "$INSTALLED" = false ]; then
-    echo -e "${RED}For LINUX System/WSL Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n${BLUE}Checking Root..."
-  else
-    echo -e "Attempting Update (Any manual modification will be reverted)"
+  if test -f "/usr/local/bin/cRun" ; then
+    echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
+    INSTALLED=true
+    if test -f "cRun.sh"; then
+      echo -n "Found script | Version : "
+      srcVERSION=$(cat cRun.sh | sed '2!d'| grep -o "'.*'"| sed "s/'//g" )
+      if test -z $srcVERSION; then
+        echo "UNKNOWN"
+        echo -e "\nNot Supported aborting\nRemove you current cRun script and try reinstalling\nHere are the steps:\n"
+        echo -e "Run this: 'sudo rm /usr/local/bin/cRun'\nThen navigate to directory where the script is and Run this './cRun.sh -i."
+        exit 2
+      else
+        echo "${srcVERSION}"
+      fi
+      HIGHER_VERSION=$(echo -ne "${VERSION}\n${srcVERSION}\n" | sort -V | tail -n -1)
+      if [ $srcVERSION != $HIGHER_VERSION ]; then
+        while true; do
+          echo -ne "${RED}This is an older version of the script.${NORMAL} Do you want to continue anyway(Not Recommended)?[Y/n] "
+          read yn
+          case $yn in
+            [Yy]* )
+              VERSION_PASS=true
+              break
+              ;;
+            [Nn]* ) 
+              exit 2
+              ;;
+            * ) echo "Please answer [Y/y/yes] or [N/n/no]";;
+          esac
+        done
+      elif [ $VERSION == $srcVERSION ]; then
+        while true; do 
+          echo -ne "${BLUE}Both the scripts are same version.${NORMAL} Do you want to overwrite?[Y/n] "
+          read yn
+          case $yn in
+            [Yy]* )
+              VERSION_PASS=true
+              break
+              ;;
+            [Nn]* ) 
+              exit 2
+              ;;
+            * ) echo "Please answer [Y/y/yes] or [N/n/no]";;
+          esac
+        done
+      else
+        VERSION_PASS=true
+      fi
+    else
+      echo -e "${RED}No Script Found...${NORMAL}"
+      exit 2
+    fi
   fi
+  if [ "$INSTALLED" = false ]; then
+    echo -e "${RED}For LINUX System/WSL Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n"
+  elif [ "$VERSION_PASS" = true ]; then
+    echo -e "Attempting Update (Any manual modifications to local bin copy will be undone)"
+    echo -e "${BLUE}$VERSION ${LGREEN}-> $srcVERSION${NORMAL}"
+  fi
+  echo -e "${BLUE}Checking Root..."
   if [ "$EUID" -ne 0 ]; then
     echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'"
     sudo echo
@@ -42,7 +97,7 @@ function install() {
   sudo cp cRun.sh /usr/local/bin/cRun
   if [ $? -ne 0 ]; then
     if [ "$INSTALLED" = false ]; then
-      echo -e "\n${RED}Failed to copy$NORMAL\nTry Manuallu Copying the script to \n$BLUE/user/local/bin/\n${NORMAL}And remove the .sh extension\n"
+      echo -e "\n${RED}Failed to copy$NORMAL\nTry Manually Copying the script to \n$BLUE/user/local/bin/\n${NORMAL}And remove the .sh extension\n"
     else
       echo -e "\nNo cRun script found in curent directory\n"
     fi
@@ -66,7 +121,17 @@ function install() {
 
 function banner() {
   clear
-  echo -e "***************${LGREEN}c${BLUE}Run$NORMAL by ${LGREEN}snehashis365$NORMAL***************\n"
+  echo -ne $LBLUE
+  cat << "EOF"
+                 ____                __  __
+          _____ / __ \ __  __ ____   \ \ \ \
+         / ___// /_/ // / / // __ \   \ \ \ \
+        / /__ / _, _// /_/ // / / /   / / / /
+        \___//_/ |_| \__,_//_/ /_/   /_/ /_/
+
+EOF
+  echo -e "${LGREEN}                          - by snehashis365${NORMAL}"
+  echo -e "Version : ${LGREEN}$VERSION${NORMAL}"
   echo -n "Re-Compile : "
   if [ "$COMPILE" = true ]; then
     echo -e "${BLUE}On$NORMAL"
@@ -132,7 +197,6 @@ function endScript() {
   if [ "$SHOW_TIME" = true ]; then
     showTime "$SECONDS"
   fi
-  echo -e "***************************************************"
   exit 2
 }
 
@@ -151,7 +215,6 @@ function compile() {
     echo -e "\n${LGREEN}Done $NORMAL"
     shift
   done
-  #echo -e "Processed ${LGREEN} $count ${NORMAL}files."
   echo -e "${LGREEN}Object files generated$NORMAL"
   if [ "$ERROR_COUNT" -gt 0 ]; then
     echo -e "$RED$ERROR_COUNT Errors$NORMAL were encountered by ${BLUE}GCC compiler$LGREEN ignoring warnings$NORMAL."
