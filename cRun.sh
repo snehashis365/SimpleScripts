@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.12'
+VERSION='0.7.18.14'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -39,7 +39,7 @@ fi
 command -v cc >/dev/null 2>&1
 if [ "$?" == "0" ] ; then
   COMPILER_INSTALLED=true #Just for referrence in case needed in future for now is redundant
-  COMPILER=$(gcc --version | grep clang)
+  COMPILER=$(cc --version | grep clang)
   if [ -z "$COMPILER" ]; then
     COMPILER=$(gcc --version | grep gcc)
   fi
@@ -51,7 +51,7 @@ else
     case $yn in
       [Yy]*)
         $PACKAGE_INSTALL
-        COMPILER=$(gcc --version | grep clang)
+        COMPILER=$(cc --version | grep clang)
         if [ -z "$COMPILER" ]; then
           COMPILER=$(gcc --version | grep gcc)
         else
@@ -80,7 +80,7 @@ function install() {
   VERSION_PASS=false
   srcVERSION=''
   if test -f "$INSTALL_DIR/cRun"; then
-    echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
+    echo -e "Found cRun at $INSTALL_DIR/\nLooking for cRun.sh in current directory...\n"
     INSTALLED=true
     if test -f "cRun.sh"; then
       echo -n "Found script | Version : "
@@ -133,7 +133,7 @@ function install() {
     fi
   fi
   if [ "$INSTALLED" = false ]; then
-    echo -e "${RED}For LINUX/WSL/Termux Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n"
+    echo -e "${RED}For LINUX/WSL/Termux Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n"
   elif [ "$VERSION_PASS" = true ]; then
     echo -e "Attempting Update (Any manual modifications to local bin copy will be undone)"
     echo -e "$BLUE$VERSION $LGREEN-> $srcVERSION$NORMAL"
