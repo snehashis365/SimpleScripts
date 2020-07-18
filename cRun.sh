@@ -27,12 +27,12 @@ function install() {
     echo -e "For LINUX System/WSL Environment only\n$NORMAL"
     exit 2
   fi
-  if test -f "/usr/local/bin/cRun" ; then
+  if test -f "/usr/local/bin/cRun"; then
     echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
     INSTALLED=true
     if test -f "cRun.sh"; then
       echo -n "Found script | Version : "
-      srcVERSION=$(cat cRun.sh | sed '2!d'| grep -o "'.*'"| sed "s/'//g" )
+      srcVERSION=$(cat cRun.sh | sed '2!d' | grep -o "'.*'" | sed "s/'//g")
       if test -z "$srcVERSION"; then
         echo "UNKNOWN"
         echo -e "\nNot Supported aborting\nRemove you current cRun script and try reinstalling\nHere are the steps:\n"
@@ -47,29 +47,29 @@ function install() {
           echo -ne "${RED}This is an older version of the script.$NORMAL Do you want to continue anyway(Not Recommended)?[Y/n] "
           read yn
           case $yn in
-            [Yy]* )
+            [Yy]*)
               VERSION_PASS=true
               break
               ;;
-            [Nn]* ) 
+            [Nn]*)
               exit 2
               ;;
-            * ) echo "Please answer [Y/y/yes] or [N/n/no]";;
+            *) echo "Please answer [Y/y/yes] or [N/n/no]" ;;
           esac
         done
       elif [ "$VERSION" == "$srcVERSION" ]; then
-        while true; do 
+        while true; do
           echo -ne "${BLUE}Both the scripts are same version.$NORMAL Do you want to overwrite?[Y/n] "
           read yn
           case $yn in
-            [Yy]* )
+            [Yy]*)
               VERSION_PASS=true
               break
               ;;
-            [Nn]* ) 
+            [Nn]*)
               exit 2
               ;;
-            * ) echo "Please answer [Y/y/yes] or [N/n/no]";;
+            *) echo "Please answer [Y/y/yes] or [N/n/no]" ;;
           esac
         done
       else
@@ -122,7 +122,7 @@ function install() {
 function banner() {
   clear
   echo -ne "$LBLUE"
-  cat << "EOF"
+  cat <<"EOF"
                  ____                __  __
           _____ / __ \ __  __ ____   \ \ \ \
          / ___// /_/ // / / // __ \   \ \ \ \
