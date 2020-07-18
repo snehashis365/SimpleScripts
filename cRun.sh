@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.5'
+VERSION='0.7.18.6'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -28,7 +28,7 @@ function install() {
     TERMUX_CHECK=$(echo $PREFIX | grep -o "com.termux")
     if [ "$?" == "0" ]; then #Tweak Install parameters for termux
       echo -e "${LGREEN}Found Termux Environtment...${NORMAL}"
-      INSTALL_DIR="~/../usr/bin"
+      INSTALL_DIR="$HOME/../usr/bin"
       INSTALL_ACCESS=""
     else
       echo -e "${RED}Install is not supported for your OS/Environment Aborting"
