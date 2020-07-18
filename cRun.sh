@@ -37,7 +37,7 @@ fi
 
 #Pre-requisite check
 command -v cc >/dev/null 2>&1
-if [ "$?" == "0" ] ; then
+if [ "$?" == "0" ]; then
   COMPILER_INSTALLED=true #Just for referrence in case needed in future for now is redundant
   COMPILER=$(cc --version | grep clang)
   if [ -z "$COMPILER" ]; then
