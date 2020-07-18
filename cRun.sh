@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.6'
+VERSION='0.7.18.8'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -14,28 +14,70 @@ RUN=true
 DEL_OBJ=false
 SHOW_TIME=false
 OS=$(uname -o)
+COMPILER=''
+COMPILER_INSTALLED=false
+INSTALL_SUPPORT=true
+INSTALL_DIR="/usr/local/bin"
+INSTALL_ACCESS="sudo "
+PACKAGE_INSTALL="sudo apt install -y gcc"
+
+#Adjust parameters
+if [ "$OS" == "Android" ]; then
+  TERMUX_CHECK=$(echo $PREFIX | grep -o "com.termux")
+  if [ "$?" == "0" ]; then #Tweak Install parameters for termux
+    echo -e "${LGREEN}Found Termux Environtment...${NORMAL}"
+    INSTALL_DIR="$HOME/../usr/bin"
+    INSTALL_ACCESS=""
+    PACKAGE_INSTALL="pkg install -y clang"
+  else
+    echo -e "${RED}Install is not supported for your OS/Environment"
+    INSTALL_SUPPORT=false
+  fi
+fi
+
+#Pre-requisite check
+command -v cc >/dev/null 2>&1
+if [ "$?" == "0" ] ; then
+  COMPILER_INSTALLED=true #Just for referrence in case needed in future for now is redundant
+  COMPILER=$(gcc --version | grep clang)
+  if [ -z "$COMPILER" ]; then
+    COMPILER=$(gcc --version | grep gcc)
+  fi
+else
+  echo -e "${RED}No Compiler found\n${NORMAL}"
+  while true; do
+    echo -n "Do you want to auto install compiler from your package manager(Debian Systems/Termux only)? [Y/n] "
+    read yn
+    case $yn in
+      [Yy]*)
+        $PACKAGE_INSTALL
+        if [ $? -ne 0 ]; then
+          echo -e "${LGREEN}Install Success...\n${NORMAL}"
+        else
+          echo -e "${RED}Install failed....\n${NORMAL}"
+          exit 2
+        fi
+        break
+        ;;
+      [Nn]*)
+        echo "Please install gcc/clang whichever you prefer before running script again"
+        exit 2
+        ;;
+      *) echo "Please answer [Y/y/yes] or [N/n/no]" ;;
+    esac
+  done
+fi
 
 #Install the script to local bin
 function install() {
-  INSTALL_DIR="/usr/local/bin"
-  INSTALL_ACCESS="sudo "
+  if [ "$INSTALL_SUPPORT" = false ]; then
+    echo "Aborting"
+  fi
   INSTALLED=false
   COPIED=false
   PERMISSION=false
   VERSION_PASS=false
   srcVERSION=''
-  if [ "$OS" == "Android" ]; then
-    TERMUX_CHECK=$(echo $PREFIX | grep -o "com.termux")
-    if [ "$?" == "0" ]; then #Tweak Install parameters for termux
-      echo -e "${LGREEN}Found Termux Environtment...${NORMAL}"
-      INSTALL_DIR="$HOME/../usr/bin"
-      INSTALL_ACCESS=""
-    else
-      echo -e "${RED}Install is not supported for your OS/Environment Aborting"
-      echo -e "For LINUX/WSL/Termux Environment only\n$NORMAL"
-      exit 2
-    fi
-  fi
   if test -f "$INSTALL_DIR/cRun"; then
     echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
     INSTALLED=true
@@ -101,6 +143,7 @@ function install() {
     ${INSTALL_ACCESS}echo
   else
     echo -e "${LGREEN}Access Granted...$NORMAL\n"
+    INSTALL_ACCESS=""
   fi
   echo -ne "${BLUE}Copying Script to local bin....$NORMAL"
   ${INSTALL_ACCESS}cp cRun.sh $INSTALL_DIR/cRun
@@ -141,6 +184,7 @@ function banner() {
 EOF
   echo -e "$LGREEN                          - by snehashis365$NORMAL"
   echo -e "Version : $LGREEN$VERSION$NORMAL"
+  echo -e "Compiler : $LBLUE$COMPILER$NORMAL"
   echo -n "Re-Compile : "
   if [ "$COMPILE" = true ]; then
     echo -e "${BLUE}On$NORMAL"
@@ -153,7 +197,7 @@ EOF
   else
     echo -e "${LGREEN}No$NORMAL"
   fi
-  echo -n "Delete object file after running : "
+  echo -n "Auto cleanup : "
   if [ "$DEL_OBJ" = true ]; then
     echo -e "${RED}On$NORMAL"
   else
@@ -340,7 +384,7 @@ function help() {
   echo "t     Show total time taken to execute the script"
   echo "d     Delete Object file after it has been execued"
   echo "s     Run as root (WSL 2 Users might want to use this if facing access denied)"
-  echo "i     Install the script to /usr/local/bin to ease"
+  echo "i     Install the script to local bin to run from any directory"
   echo
 }
 
@@ -392,7 +436,12 @@ while getopts ":hcrmtdsi" opt; do
       fi
       ;;
     i) #Install
-      install
+      if [ "$INSTALL_SUPPORT" = true ]; then
+        install
+      else
+        echo "Aborting..."
+        exit 2
+      fi
       ;;
     \?)
       echo "Invalid option: $OPTARG" 1>&2
