@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.15'
+VERSION='0.7.18.20'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -9,6 +9,7 @@ LBLUE='\033[0;36m'
 NORMAL='\033[0m'
 BEEP='\007'
 MAKE_MENU=false
+SINGLE_FILE=false
 COMPILE=true
 RUN=true
 DEL_OBJ=false
@@ -155,13 +156,13 @@ function install() {
   echo -e "${BLUE}Checking Access..."
   if [ "$EUID" -ne 0 -a "$OS" != "Android" ]; then
     echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'"
-    "${INSTALL_ACCESS}"echo
+    ${INSTALL_ACCESS}echo
   else
     echo -e "${LGREEN}Access Granted...$NORMAL\n"
     INSTALL_ACCESS=""
   fi
   echo -ne "${BLUE}Copying Script to local bin....$NORMAL"
-  "${INSTALL_ACCESS}"cp cRun.sh "$INSTALL_DIR"/cRun
+  ${INSTALL_ACCESS}cp cRun.sh "$INSTALL_DIR"/cRun
   if [ $? -ne 0 ]; then
     if [ "$INSTALLED" = false ]; then
       echo -e "\n${RED}Failed to copy$NORMAL\nTry Manually Copying the script to \n$BLUE/user/local/bin/\n${NORMAL}And remove the .sh extension\n"
@@ -173,7 +174,7 @@ function install() {
     COPIED=true
   fi
   echo -ne "${BLUE}Setting permission......$NORMAL"
-  "${INSTALL_ACCESS}"chmod +x "$INSTALL_DIR"/cRun
+  ${INSTALL_ACCESS}chmod +x "$INSTALL_DIR"/cRun
   if [ $? -ne 0 ]; then
     echo -e "${RED}Failed to set executable permission$NORMAL\nTry to Manually set permission for \n$BLUE/user/local/bin/cRun\n$NORMAL"
   else
@@ -326,9 +327,11 @@ function buildSubMenu() {
   while ((1)); do
     banner
     echo -e "${BLUE}Selected ->$LGREEN $1 $NORMAL"
-    echo -e "1. ${LGREEN}Run $NORMAL(Automatically compile if object file missing)"
-    echo -e "2. ${BLUE}Compile Only $NORMAL"
-    echo -e "\n9. Return to Main Menu"
+    echo -e "1. ${LGREEN}Run $NORMAL(Auto compile)"
+    echo -e "2. ${BLUE}Compile Only $NORMAL\n"
+    if [ "$SINGLE_FILE" = false ]; then
+      echo -e "9. Return to Main Menu"
+    fi
     echo -e "0. Exit"
     read -p "Select : " CHOICE
     if ((CHOICE == 1)); then
@@ -357,6 +360,7 @@ function buildMenu() {
     endScript
   fi
   if [ "$#" = "1" ]; then
+    SINGLE_FILE=true
     buildSubMenu "$1"
     clear
     return 2
@@ -394,7 +398,7 @@ function help() {
   echo "h     Print this Help"
   echo "c     Compile only/Recompile(If object file present)"
   echo "r     Run relevant object file without recompiling(Automatically compile if object file missing)"
-  #echo "v     Verbose mode."
+  echo "v     Show Version"
   echo "m     Build a menu with the provided files"
   echo "t     Show total time taken to execute the script"
   echo "d     Delete Object file after it has been execued"
@@ -408,7 +412,7 @@ function help() {
 trap "endScript" 2
 
 #Options and options arguments handling:-
-while getopts ":hcrmtdsiu" opt; do
+while getopts ":hcrmtvdsiu" opt; do
   case $opt in
     h) #Display Help message
       help
@@ -431,6 +435,10 @@ while getopts ":hcrmtdsiu" opt; do
       ;;
     t) #Show shell execution duration
       SHOW_TIME=true
+      ;;
+    v) #Show Version
+      echo -e "${LBLUE}cRun ${LGREEN}$VERSION ${RED}by snehashis365${NORMAL}"
+      exit 0
       ;;
     d) #Delete Object file after running the program
       echo -e "Object Files will be ${RED}DELETED$BLUE After Execution$NORMAL"
