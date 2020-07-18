@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.11'
+VERSION='0.7.18.12'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -51,6 +51,13 @@ else
     case $yn in
       [Yy]*)
         $PACKAGE_INSTALL
+        COMPILER=$(gcc --version | grep clang)
+        if [ -z "$COMPILER" ]; then
+          COMPILER=$(gcc --version | grep gcc)
+        else
+          echo "Run the script again"
+          exit 2
+        fi
         break
         ;;
       [Nn]*)
@@ -81,7 +88,7 @@ function install() {
       if test -z "$srcVERSION"; then
         echo "UNKNOWN"
         echo -e "\nNot Supported aborting\nRemove you current cRun script and try reinstalling\nHere are the steps:\n"
-        echo -e "Run this: '${INSTALL_ACCESS}rm $INSTALL_DIR/cRun'\nThen navigate to directory where the script is and Run this './cRun.sh -i."
+        echo -e "Run this: '${INSTALL_ACCESS}rm $INSTALL_DIR/cRun'\nThen navigate to directory where the script is and Run this: './cRun.sh -i."
         exit 2
       else
         echo "$srcVERSION"
