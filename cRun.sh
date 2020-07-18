@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.2'
+VERSION='0.7.18.5'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -17,17 +17,26 @@ OS=$(uname -o)
 
 #Install the script to local bin
 function install() {
+  INSTALL_DIR="/usr/local/bin"
+  INSTALL_ACCESS="sudo "
   INSTALLED=false
   COPIED=false
   PERMISSION=false
   VERSION_PASS=false
   srcVERSION=''
   if [ "$OS" == "Android" ]; then
-    echo -e "${RED}Install is not supported for your OS Aborting"
-    echo -e "For LINUX System/WSL Environment only\n$NORMAL"
-    exit 2
+    TERMUX_CHECK=$(echo $PREFIX | grep -o "com.termux")
+    if [ "$?" == "0" ]; then #Tweak Install parameters for termux
+      echo -e "${LGREEN}Found Termux Environtment...${NORMAL}"
+      INSTALL_DIR="~/../usr/bin"
+      INSTALL_ACCESS=""
+    else
+      echo -e "${RED}Install is not supported for your OS/Environment Aborting"
+      echo -e "For LINUX/WSL/Termux Environment only\n$NORMAL"
+      exit 2
+    fi
   fi
-  if test -f "/usr/local/bin/cRun"; then
+  if test -f "$INSTALL_DIR/cRun"; then
     echo -e "cRun Already present at local bin\nTo update script run the install option from the newer script file pulled\nor from same directory as the newer script\n\nLooking for cRun.sh in current directory\n"
     INSTALLED=true
     if test -f "cRun.sh"; then
@@ -36,7 +45,7 @@ function install() {
       if test -z "$srcVERSION"; then
         echo "UNKNOWN"
         echo -e "\nNot Supported aborting\nRemove you current cRun script and try reinstalling\nHere are the steps:\n"
-        echo -e "Run this: 'sudo rm /usr/local/bin/cRun'\nThen navigate to directory where the script is and Run this './cRun.sh -i."
+        echo -e "Run this: '${INSTALL_ACCESS}rm $INSTALL_DIR/cRun'\nThen navigate to directory where the script is and Run this './cRun.sh -i."
         exit 2
       else
         echo "$srcVERSION"
@@ -81,20 +90,20 @@ function install() {
     fi
   fi
   if [ "$INSTALLED" = false ]; then
-    echo -e "${RED}For LINUX System/WSL Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n"
+    echo -e "${RED}For LINUX/WSL/Termux Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n"
   elif [ "$VERSION_PASS" = true ]; then
     echo -e "Attempting Update (Any manual modifications to local bin copy will be undone)"
     echo -e "$BLUE$VERSION $LGREEN-> $srcVERSION$NORMAL"
   fi
-  echo -e "${BLUE}Checking Root..."
-  if [ "$EUID" -ne 0 ]; then
+  echo -e "${BLUE}Checking Access..."
+  if [ "$EUID" -ne 0 -a "$OS" != "Android" ]; then
     echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'"
-    sudo echo
+    ${INSTALL_ACCESS}echo
   else
-    echo -e "${LGREEN}Root Access Granted...$NORMAL\n"
+    echo -e "${LGREEN}Access Granted...$NORMAL\n"
   fi
   echo -ne "${BLUE}Copying Script to local bin....$NORMAL"
-  sudo cp cRun.sh /usr/local/bin/cRun
+  ${INSTALL_ACCESS}cp cRun.sh $INSTALL_DIR/cRun
   if [ $? -ne 0 ]; then
     if [ "$INSTALLED" = false ]; then
       echo -e "\n${RED}Failed to copy$NORMAL\nTry Manually Copying the script to \n$BLUE/user/local/bin/\n${NORMAL}And remove the .sh extension\n"
@@ -106,7 +115,7 @@ function install() {
     COPIED=true
   fi
   echo -ne "${BLUE}Setting permission......$NORMAL"
-  sudo chmod +x /usr/local/bin/cRun
+  ${INSTALL_ACCESS}chmod +x $INSTALL_DIR/cRun
   if [ $? -ne 0 ]; then
     echo -e "${RED}Failed to set executable permission$NORMAL\nTry to Manually set permission for \n$BLUE/user/local/bin/cRun\n$NORMAL"
   else
@@ -368,13 +377,18 @@ while getopts ":hcrmtdsi" opt; do
       DEL_OBJ=true
       ;;
     s) #Superuser aka root access
-      echo -e "Checking user.....\n"
-      if [ "$EUID" -ne 0 ]; then
-        echo -e "$RED\n${NORMAL}Attempting 'sudo'"
-        sudo "$0"
-        exit 2
+      if [ "$OS" != "Android" ]; then
+        echo -e "Checking user.....\n"
+        if [ "$EUID" -ne 0 ]; then
+          echo -e "$RED\n${NORMAL}Attempting 'sudo'"
+          sudo "$0"
+          exit 2
+        else
+          echo -e "${LGREEN}Already Root...$NORMAL\n"
+        fi
       else
-        echo -e "${LGREEN}Already Root...$NORMAL\n"
+        echo -e "${RED}Not supported for your environment${NORMAL}\nDont Run as Superuser"
+        exit 2
       fi
       ;;
     i) #Install
