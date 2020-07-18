@@ -33,18 +33,18 @@ function install() {
     if test -f "cRun.sh"; then
       echo -n "Found script | Version : "
       srcVERSION=$(cat cRun.sh | sed '2!d'| grep -o "'.*'"| sed "s/'//g" )
-      if test -z $srcVERSION; then
+      if test -z "$srcVERSION"; then
         echo "UNKNOWN"
         echo -e "\nNot Supported aborting\nRemove you current cRun script and try reinstalling\nHere are the steps:\n"
         echo -e "Run this: 'sudo rm /usr/local/bin/cRun'\nThen navigate to directory where the script is and Run this './cRun.sh -i."
         exit 2
       else
-        echo "${srcVERSION}"
+        echo "$srcVERSION"
       fi
-      HIGHER_VERSION=$(echo -ne "${VERSION}\n${srcVERSION}\n" | sort -V | tail -n -1)
-      if [ $srcVERSION != $HIGHER_VERSION ]; then
+      HIGHER_VERSION=$(echo -ne "$VERSION\n$srcVERSION\n" | sort -V | tail -n -1)
+      if [ "$srcVERSION" != "$HIGHER_VERSION" ]; then
         while true; do
-          echo -ne "${RED}This is an older version of the script.${NORMAL} Do you want to continue anyway(Not Recommended)?[Y/n] "
+          echo -ne "${RED}This is an older version of the script.$NORMAL Do you want to continue anyway(Not Recommended)?[Y/n] "
           read yn
           case $yn in
             [Yy]* )
@@ -57,9 +57,9 @@ function install() {
             * ) echo "Please answer [Y/y/yes] or [N/n/no]";;
           esac
         done
-      elif [ $VERSION == $srcVERSION ]; then
+      elif [ "$VERSION" == "$srcVERSION" ]; then
         while true; do 
-          echo -ne "${BLUE}Both the scripts are same version.${NORMAL} Do you want to overwrite?[Y/n] "
+          echo -ne "${BLUE}Both the scripts are same version.$NORMAL Do you want to overwrite?[Y/n] "
           read yn
           case $yn in
             [Yy]* )
@@ -76,7 +76,7 @@ function install() {
         VERSION_PASS=true
       fi
     else
-      echo -e "${RED}No Script Found...${NORMAL}"
+      echo -e "${RED}No Script Found...$NORMAL"
       exit 2
     fi
   fi
@@ -84,7 +84,7 @@ function install() {
     echo -e "${RED}For LINUX System/WSL Environment only\n${NORMAL}After this you can run the script from any directory without having to copy it manually\n"
   elif [ "$VERSION_PASS" = true ]; then
     echo -e "Attempting Update (Any manual modifications to local bin copy will be undone)"
-    echo -e "${BLUE}$VERSION ${LGREEN}-> $srcVERSION${NORMAL}"
+    echo -e "$BLUE$VERSION $LGREEN-> $srcVERSION$NORMAL"
   fi
   echo -e "${BLUE}Checking Root..."
   if [ "$EUID" -ne 0 ]; then
@@ -121,7 +121,7 @@ function install() {
 
 function banner() {
   clear
-  echo -ne $LBLUE
+  echo -ne "$LBLUE"
   cat << "EOF"
                  ____                __  __
           _____ / __ \ __  __ ____   \ \ \ \
@@ -130,8 +130,8 @@ function banner() {
         \___//_/ |_| \__,_//_/ /_/   /_/ /_/
 
 EOF
-  echo -e "${LGREEN}                          - by snehashis365${NORMAL}"
-  echo -e "Version : ${LGREEN}$VERSION${NORMAL}"
+  echo -e "$LGREEN                          - by snehashis365$NORMAL"
+  echo -e "Version : $LGREEN$VERSION$NORMAL"
   echo -n "Re-Compile : "
   if [ "$COMPILE" = true ]; then
     echo -e "${BLUE}On$NORMAL"
@@ -370,7 +370,7 @@ while getopts ":hcrmtdsi" opt; do
     s) #Superuser aka root access
       echo -e "Checking user.....\n"
       if [ "$EUID" -ne 0 ]; then
-        echo -e "${RED}\n${NORMAL}Attempting 'sudo'"
+        echo -e "$RED\n${NORMAL}Attempting 'sudo'"
         sudo "$0"
         exit 2
       else
