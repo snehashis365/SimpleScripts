@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.14'
+VERSION='0.7.18.15'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -68,6 +68,20 @@ else
     esac
   done
 fi
+
+#Download latest script from github repo
+function download() {
+  echo -e "'git pull' recommended if repo is cloned on system\nCreating Directory"
+  dVERSION=''
+  mkdir Downloaded_script
+  echo "Downloading..."
+  curl https://raw.githubusercontent.com/snehashis365/SimpleScripts/master/cRun.sh >Downloaded_script/cRun.sh
+  if [ "$?" == "0" ]; then
+    echo "File saved in $PWD/Downloaded_script/"
+  else
+    echo "Failed to download"
+  fi
+}
 
 #Install the script to local bin
 function install() {
@@ -251,7 +265,7 @@ function endScript() {
   if [ "$SHOW_TIME" = true ]; then
     showTime "$SECONDS"
   fi
-  exit 2
+  exit 0
 }
 
 function compile() {
@@ -386,6 +400,7 @@ function help() {
   echo "d     Delete Object file after it has been execued"
   echo "s     Run as root (WSL 2 Users might want to use this if facing access denied)"
   echo "i     Install the script to local bin to run from any directory"
+  echo "d     Download latest script from repository and save to a separate directory not affecting current script"
   echo
 }
 
@@ -393,11 +408,11 @@ function help() {
 trap "endScript" 2
 
 #Options and options arguments handling:-
-while getopts ":hcrmtdsi" opt; do
+while getopts ":hcrmtdsiu" opt; do
   case $opt in
     h) #Display Help message
       help
-      exit 2
+      exit 0
       ;;
     c) #Compile/Re-compile
       COMPILE=true
@@ -427,7 +442,7 @@ while getopts ":hcrmtdsi" opt; do
         if [ "$EUID" -ne 0 ]; then
           echo -e "$RED\n${NORMAL}Attempting 'sudo'"
           sudo "$0"
-          exit 2
+          exit 0
         else
           echo -e "${LGREEN}Already Root...$NORMAL\n"
         fi
@@ -443,6 +458,10 @@ while getopts ":hcrmtdsi" opt; do
         echo "Aborting..."
         exit 2
       fi
+      ;;
+    u) #Download latest script from repo
+      download
+      exit 1
       ;;
     \?)
       echo "Invalid option: $OPTARG" 1>&2
