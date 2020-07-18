@@ -23,9 +23,9 @@ PACKAGE_INSTALL="sudo apt install -y gcc"
 
 #Adjust parameters
 if [ "$OS" == "Android" ]; then
-  TERMUX_CHECK=$(echo $PREFIX | grep -o "com.termux")
+  TERMUX_CHECK=$(echo "$PREFIX" | grep -o "com.termux")
   if [ "$?" == "0" ]; then #Tweak Install parameters for termux
-    echo -e "${LGREEN}Found Termux Environtment...${NORMAL}"
+    echo -e "${LGREEN}Found Termux Environtment...$NORMAL"
     INSTALL_DIR="$HOME/../usr/bin"
     INSTALL_ACCESS=""
     PACKAGE_INSTALL="pkg install -y clang"
@@ -44,13 +44,13 @@ if [ "$?" == "0" ] ; then
     COMPILER=$(gcc --version | grep gcc)
   fi
 else
-  echo -e "${RED}No Compiler found\n${NORMAL}"
+  echo -e "${RED}No Compiler found\n$NORMAL"
   while true; do
     echo -n "Do you want to auto install compiler from your package manager(Debian Systems/Termux only)? [Y/n] "
     read yn
     case $yn in
       [Yy]*)
-        $PACKAGE_INSTALL
+        "$PACKAGE_INSTALL"
         COMPILER=$(cc --version | grep clang)
         if [ -z "$COMPILER" ]; then
           COMPILER=$(gcc --version | grep gcc)
@@ -155,13 +155,13 @@ function install() {
   echo -e "${BLUE}Checking Access..."
   if [ "$EUID" -ne 0 -a "$OS" != "Android" ]; then
     echo -e "${RED}Root Access Required\n${NORMAL}Attempting 'sudo'"
-    ${INSTALL_ACCESS}echo
+    "${INSTALL_ACCESS}"echo
   else
     echo -e "${LGREEN}Access Granted...$NORMAL\n"
     INSTALL_ACCESS=""
   fi
   echo -ne "${BLUE}Copying Script to local bin....$NORMAL"
-  ${INSTALL_ACCESS}cp cRun.sh $INSTALL_DIR/cRun
+  "${INSTALL_ACCESS}"cp cRun.sh "$INSTALL_DIR"/cRun
   if [ $? -ne 0 ]; then
     if [ "$INSTALLED" = false ]; then
       echo -e "\n${RED}Failed to copy$NORMAL\nTry Manually Copying the script to \n$BLUE/user/local/bin/\n${NORMAL}And remove the .sh extension\n"
@@ -173,7 +173,7 @@ function install() {
     COPIED=true
   fi
   echo -ne "${BLUE}Setting permission......$NORMAL"
-  ${INSTALL_ACCESS}chmod +x $INSTALL_DIR/cRun
+  "${INSTALL_ACCESS}"chmod +x "$INSTALL_DIR"/cRun
   if [ $? -ne 0 ]; then
     echo -e "${RED}Failed to set executable permission$NORMAL\nTry to Manually set permission for \n$BLUE/user/local/bin/cRun\n$NORMAL"
   else
@@ -447,7 +447,7 @@ while getopts ":hcrmtdsiu" opt; do
           echo -e "${LGREEN}Already Root...$NORMAL\n"
         fi
       else
-        echo -e "${RED}Not supported for your environment${NORMAL}\nDont Run as Superuser"
+        echo -e "${RED}Not supported for your environment$NORMAL\nDont Run as Superuser"
         exit 2
       fi
       ;;
