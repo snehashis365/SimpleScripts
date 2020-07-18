@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.8'
+VERSION='0.7.18.10'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -51,8 +51,10 @@ else
     case $yn in
       [Yy]*)
         $PACKAGE_INSTALL
-        if [ $? -ne 0 ]; then
+        command -v cc >/dev/null 2>&1
+        if [ "$?" == "0" ] ; then
           echo -e "${LGREEN}Install Success...\n${NORMAL}"
+          read -r -s -p $'Press escape to continue...\n' -d $'\e'
         else
           echo -e "${RED}Install failed....\n${NORMAL}"
           exit 2
