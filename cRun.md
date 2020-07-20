@@ -1,4 +1,9 @@
 ## A simple tool for Compiling and Running multiple .c files at once
+                                                       ____                __  __
+                                                _____ / __ \ __  __ ____   \ \ \ \
+                                               / ___// /_/ // / / // __ \   \ \ \ \
+                                              / /__ / _, _// /_/ // / / /   / / / /
+                                              \___//_/ |_| \__,_//_/ /_/   /_/ /_/
 
 ### What is cRun?
 
@@ -14,7 +19,7 @@ Now some out there already know that on a Linux Environment using the _gcc compi
 
 Now while this is the easiest way it still gets messy with how average students code on their system we create multiple **.c** files in the same directory and keep compiling them without providing a separate object file name not to mention the need to type separate commands again and again to compile and run the program.
 
-##### cRun Makes it easier to interact with all your programs in the current directory or just run a single C Program with one command
+#### cRun Makes it easier to interact with all your programs in the current directory or just run a single C Program with one command
 
 ```markdown
 Syntax highlighted code block
