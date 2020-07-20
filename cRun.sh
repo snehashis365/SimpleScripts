@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.18.20'
+VERSION='0.7.20.3'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -284,10 +284,11 @@ function compile() {
     echo -e "\n${LGREEN}Done $NORMAL"
     shift
   done
-  echo -e "${LGREEN}Object files generated$NORMAL"
   if [ "$ERROR_COUNT" -gt 0 ]; then
     echo -e "$RED$ERROR_COUNT Errors$NORMAL were encountered by ${BLUE}GCC compiler$LGREEN ignoring warnings$NORMAL."
     return "$ERROR_COUNT"
+  else
+    echo -e "${LGREEN}Object files generated$NORMAL"
   fi
   if [ "$RUN" = false ]; then
     echo -e "\nCompile Output will be cleared Press ctrl+c to exit the script and keep output otherwise\n"
@@ -306,7 +307,7 @@ function run() {
         COMPILE_ERROR=false
       fi
     fi
-    if [ COMPILE_ERROR=false ]; then
+    if [ "$COMPILE_ERROR" = false ]; then
       echo -e "${BLUE}Executing$NORMAL.....$1\n"
       ./"${1/.c*/.out}"
       if [ "$DEL_OBJ" = true ]; then
