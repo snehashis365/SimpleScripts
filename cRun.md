@@ -1,9 +1,7 @@
 ## A simple tool for Compiling and Running multiple .c files at once
-                                               ____                __  __
-                                        _____ / __ \ __  __ ____   \ \ \ \
-                                       / ___// /_/ // / / // __ \   \ \ \ \
-                                      / /__ / _, _// /_/ // / / /   / / / /
-                                      \___//_/ |_| \__,_//_/ /_/   /_/ /_/
+<p align="center">
+  <img src="https://i.ibb.co/wYD0TKy/c-Run-image.png" alt="Sublime's custom image"/>
+</p>
 
 ### What is cRun?
 
