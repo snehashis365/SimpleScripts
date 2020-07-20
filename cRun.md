@@ -1,11 +1,10 @@
-## A simple tool for Compiling and Running multiple .c files at once
 <p align="center">
   <img src="https://i.ibb.co/wYD0TKy/c-Run-image.png" alt="Sublime's custom image"/>
 </p>
 
-### What is cRun?
+## What is cRun?
 
-cRun is a script that is meant to make compiling and running **.c** files easy for both beginners and experienced. It's designed mainly based on the use case of **students** new to C Programming
+cRun is a bash script that is meant to make compiling and running **.c** files easy for both beginners and experienced. It's designed mainly based on the use case of **students** new to C Programming
 
 ### Why cRun?
 
@@ -17,26 +16,11 @@ Now some out there already know that on a Linux Environment using the _gcc compi
 
 Now while this is the easiest way it still gets messy with how average students code on their system we create multiple **.c** files in the same directory and keep compiling them without providing a separate object file name not to mention the need to type separate commands again and again to compile and run the program.
 
-#### cRun Makes it easier to interact with all your programs in the current directory or just run a single C Program with one command
+**cRun Makes it easier to interact with all your programs in the current directory or just run a single C Program with one command**
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
+```bash
 
-## Header 2
-
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
 
 For more details see
@@ -46,7 +30,7 @@ For more details see
 
 Your Pages site will use the layout and styles from the Jekyll theme you have
 selected in your
-[repository settings](https://github.com/snehashis365/SimpleScriptsForBash/settings).
+[repository settings](https://github.com/snehashis365/SimpleScripts/settings).
 The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
 ### Support or Contact
