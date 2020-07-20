@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION='0.7.20.3'
+VERSION='0.7.20.4'
 #This script will compile the files specified and generator object files with same name as the C file and Execute them in the other named.
 #For e.g:- example.c will give example.out and execute example.out
 LGREEN='\033[1;32m'
@@ -484,20 +484,17 @@ clear
 
 if [ $# -gt 0 ]; then
   count=$#
-  while (($#)); do
-    if [ "$MAKE_MENU" = true ]; then
-      while ((1)); do
-        buildMenu "$@"
-      done
-    elif [ "$RUN" = true ]; then
-      banner
-      run "$@"
-    elif [ "$COMPILE" = true ]; then
-      banner
-      compile "$@"
-    fi
-    shift
-  done
+  if [ "$MAKE_MENU" = true ]; then
+    while ((1)); do
+      buildMenu "$@"
+    done
+  elif [ "$RUN" = true ]; then
+    banner
+    run "$@"
+  elif [ "$COMPILE" = true ]; then
+    banner
+    compile "$@"
+  fi
   echo -e "Processed $LGREEN $count ${NORMAL}files."
 else
   while ((1)); do
