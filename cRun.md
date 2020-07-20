@@ -1,11 +1,20 @@
-## What is cRun?
+## A simple tool for Compiling and Running multiple .c files at once
 
-cRun is a script that is meant to make compiling and running **.c** files easy for both begginers and experienced. It's designed mainly based on the use case of **students** new to C Programming
+### What is cRun?
 
-### Markdown
+cRun is a script that is meant to make compiling and running **.c** files easy for both beginners and experienced. It's designed mainly based on the use case of **students** new to C Programming
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It
-includes conventions for
+### Why cRun?
+
+Beginners are usually on a Windows machine running Dev-C++ or even Turbo C++. Now everyone has their comfort zone but let's be honest it's **a clunky interface and experience is mediocre at the best**.
+
+There are better code editors out there but very few come with a interface to facilitate compiling and running the file directly(Some are even paid).
+
+Now some out there already know that on a Linux Environment using the _gcc compiler_ to compile the file and then executing the object file from the terminal saves a lot more time and is much more efficient. Paired with a good Code Editor like Visual Studio Code, Sublime Text Editor, etc one can simply code on the editor and turn to the Terminal to compile and then run the generated object file.
+
+Now while this is the easiest way it still gets messy with how average students code on their system we create multiple **.c** files in the same directory and keep compiling them without providing a separate object file name not to mention the need to type separate commands again and again to compile and run the program.
+
+##### cRun Makes it easier to interact with all your programs in the current directory or just run a single C Program with one command
 
 ```markdown
 Syntax highlighted code block
