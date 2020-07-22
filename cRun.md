@@ -36,9 +36,10 @@ Run a single file or multiple files one after another or maybe just get a menu w
 Doesn't matter if you are a beginner on **Windows 10** or learning **Linux** with Ubuntu or just chilling with your **Android** Smartphone a single script is all you need I don't discriminate your choice of platform.
 
 <p float="left" align ="center">
-  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="300" style="padding: 6px" />
-  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="300" style="padding: 6px" /> 
-  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="300" style="padding: 6px" />
+Example on Android (from Termux)
+  <img src="https://i.ibb.co/WnKXX9n/Termux-Install.jpg" width="300" style="padding: 6px" />
+  <img src="https://i.ibb.co/JsDtHxy/Termux.jpg" width="300" style="padding: 6px" /> 
+  <img src="https://i.ibb.co/JCwzJsP/Termux-Run.jpg" width="300" style="padding: 6px" />
 </p>
 
 _Note: The script itself will run on any platform with a bash environment but install will be supported on a select few_
