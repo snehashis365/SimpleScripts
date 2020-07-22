@@ -28,12 +28,14 @@ Run a single file or multiple files one after another or maybe just get a menu w
   <img src="https://i.ibb.co/KzLqwF6/Multi-Compile.gif" alt="Compile Many"/>
   Compile Multiple files at once
 </p>
-
-**There are many other options and tricks check the features section to learn more.**
+<p>&nbsp;</p>
+**There are many other options and tricks check the help message to learn more.**
 
 ### It's your choice !
 
 Doesn't matter if you are a beginner on **Windows 10** or learning **Linux** with Ubuntu or just chilling with your **Android** Smartphone a single script is all you need I don't discriminate your choice of platform.
+
+![Android Menu](https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg)  ![Android Menu](https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg)
 
 _Note: The script itself will run on any platform with a bash environment but install will be supported on a select few_
 
