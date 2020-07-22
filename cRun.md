@@ -35,10 +35,10 @@ Run a single file or multiple files one after another or maybe just get a menu w
 
 Doesn't matter if you are a beginner on **Windows 10** or learning **Linux** with Ubuntu or just chilling with your **Android** Smartphone a single script is all you need I don't discriminate your choice of platform.
 
-<p float="left">
-  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="100" />
-  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="100" /> 
-  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="100" />
+<p float="left" align ="center">
+  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="300" />
+  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="300" /> 
+  <img src="https://i.ibb.co/Rg4H3yk/Screenshot-2020-07-22-16-11-43-883-com-termux.jpg" width="300" />
 </p>
 
 _Note: The script itself will run on any platform with a bash environment but install will be supported on a select few_
