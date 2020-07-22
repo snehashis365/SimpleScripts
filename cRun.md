@@ -12,9 +12,21 @@ I wrote this script after finding some things annoying about C Programming and b
 
 ### Go single or spice it up
 
-Run a single file or multiple files one after another or maybe just get a menu with a list of all C programs in current directory all these and more with one command.
+Run a single file or multiple files one after another or maybe just get a menu with a list of all C programs in current directory all these and more with single commands.
 
-There are many options check the features section to learn more.
+<p align="center">
+  <img src="https://i.ibb.co/hCPZSPv/Menu-Default.gif" alt="Default Menu"/>
+  Default Menu
+  
+  <img src="https://i.ibb.co/NYhcD54/Single-File.gif" alt="Single File"/>
+  Run a single file
+  
+  <img src="https://i.ibb.co/KzLqwF6/Multi-Compile.gif" alt="Compile Many"/>
+  Compile Multiple files at once
+  
+</p>
+
+There are many other options and tricks check the features section to learn more.
 
 ### It's your choice !
 
@@ -31,9 +43,13 @@ _Note: The script itself will run on any platform with a bash environment but in
 
 ### No need to copy in every folder
 
+<p align="center">
+  <img src="https://i.ibb.co/zs3gNqL/Install-fresh.gif" alt="Install Once"/>
+</p>
+
 Once installed you can run the script from any directory you want. The script has a inbuilt function to copy itself to the local bin of your environment so that you can just "cRun" anywhere you want, it will appear like any other system command
 
-### Updates are easy AF
+### Updates are Easy AF
 
 So you been using the script for some time and you find out there's a new version out now what to do then well just get the latest script however you wish ( Can do a quick git pull, or just use the inbuilt download option and navigate to that folder) and re run the install option it's just one command and it will handle the rest itself.
 
@@ -57,7 +73,7 @@ Now while this is the simplest way it still gets messy with how most of the stud
 **cRun Makes it easier to interact with all your programs in the current directory or just run a single C Program with one command**
 
 
-```bash
+```
 Work in progress
 ```
 
