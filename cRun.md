@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.ibb.co/wYD0TKy/c-Run-image.png" alt="Sublime's custom image"/>
+  <img src="https://i.ibb.co/wYD0TKy/c-Run-image.png" alt="cRun-Banner"/>
 </p>
 
 ## What is cRun?
@@ -22,7 +22,7 @@ Doesn't matter if you are a beginner on **Windows 10** or learning **Linux** wit
 
 _Note: The script itself will run on any platform with a bash environment but install will be supported on a select few_
 
-###### Platforms supported for install
+##### Platforms supported for install
 - Windows 10 (WSL)
 - Linux
   - Debian Systems
@@ -36,6 +36,10 @@ Once installed you can run the script from any directory you want. The script ha
 ### Updates are easy AF
 
 So you been using the script for some time and you find out there's a new version out now what to do then well just get the latest script however you wish ( Can do a quick git pull, or just use the inbuilt download option and navigate to that folder) and re run the install option it's just one command and it will handle the rest itself.
+
+<p align="center">
+  <img src="https://i.ibb.co/zVLGF8Z/Update-Higher-V.gif" alt="Update Easy"/>
+</p>
 
 Every time the install option is run the script check the current directory for version of itself and will prompt the user according to the found version you can even downgrade to a previous version like this if you find some stupid bug in the latest one
 
