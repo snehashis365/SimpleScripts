@@ -34,9 +34,8 @@ Run a single file or multiple files one after another or maybe just get a menu w
 ### It's your choice !
 
 Doesn't matter if you are a beginner on **Windows 10** or learning **Linux** with Ubuntu or just chilling with your **Android** Smartphone a single script is all you need I don't discriminate your choice of platform.
-
+<p align ="center">Example on Android (from Termux)</p>
 <p float="left" align ="center">
-Example on Android (from Termux)
   <img src="https://i.ibb.co/WnKXX9n/Termux-Install.jpg" width="300" style="padding: 6px" />
   <img src="https://i.ibb.co/JsDtHxy/Termux.jpg" width="300" style="padding: 6px" /> 
   <img src="https://i.ibb.co/JCwzJsP/Termux-Run.jpg" width="300" style="padding: 6px" />
