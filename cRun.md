@@ -38,7 +38,7 @@ Once installed you can run the script from any directory you want. The script ha
 So you been using the script for some time and you find out there's a new version out now what to do then well just get the latest script however you wish ( Can do a quick git pull, or just use the inbuilt download option and navigate to that folder) and re run the install option it's just one command and it will handle the rest itself.
 
 <p align="center">
-  <img src="https://i.ibb.co/zVLGF8Z/Update-Higher-V.gif" alt="Update Easy"/>
+  <img src="https://i.ibb.co/jkxgzVD/Update-Higher-V.gif" alt="Update Easy"/>
 </p>
 
 Every time the install option is run the script check the current directory for version of itself and will prompt the user according to the found version you can even downgrade to a previous version like this if you find some stupid bug in the latest one
