@@ -17,16 +17,13 @@ Run a single file or multiple files one after another or maybe just get a menu w
 <p align="center">
   <img src="https://i.ibb.co/hCPZSPv/Menu-Default.gif" alt="Default Menu"/>
   Default Menu
-  
-  
+  <p>&nbsp;</p> 
   <img src="https://i.ibb.co/NYhcD54/Single-File.gif" alt="Single File"/>
   Run a single file
-  
-  
+  <p>&nbsp;</p>
   <img src="https://i.ibb.co/KzLqwF6/Multi-Compile.gif" alt="Compile Many"/>
   Compile Multiple files at once
-  
-  
+  <p>&nbsp;</p>
 </p>
 
 There are many other options and tricks check the features section to learn more.
