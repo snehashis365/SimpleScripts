@@ -2,5 +2,3 @@ theme: jekyll-theme-cayman
 title: "cRun"
 description: "C Programming simplified"
 markdown: GFM
-github:
-  zip_url: https://github.com/snehashis365/cRun/archive/master.zip
